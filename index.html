@@ -1,1 +1,1757 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Professional Quote Generator for Business Services">
+    <meta name="theme-color" content="#0D0D2B">
+    <title> Quote Generator</title>
+
+    <!-- External Resources -->
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --brand-primary: #1e3c72;
+            --brand-secondary: #2a5298;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e7ff;
+            --border: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    transform: scale(0.9); /* Scale down entire content */
+    transform-origin: top center;
+}
+
+        /* Modern Service Button Styles */
+        .service-button {
+    width: 100%;
+    text-align: left;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 8px;
+    color: #1a365d;
+    background: #f8fafc;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+    
+}
+.service-button.active {
+    background: #1a365d;
+    color: white;
+    transform: translateX(20px);
+    transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+.service-button:hover:not(.active) {
+    background: #9aa5b1;
+    transform: translateX(5px);
+    transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+.service-button.active:hover {
+    background: #1a365d;
+    color: white;
+    transform: translateX(20px);
+    transition: transform 0.3s ease;
+}
+.service-button i {
+    transition: transform 0.3s ease;
+}
+
+.service-button:hover:not(.active) i {
+    transform: translateX(5px);
+}
+
+        .receipt-header .font-bold {
+            color: #334155;
+        }
+
+        
+
+        
+        /* Modern Form Checkbox */
+        .form-checkbox {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            border: 2px solid #2a5298;
+            transition: all 0.3s ease;
+        }
+
+        .form-checkbox:checked {
+            background: #2a5298;
+            border-color: transparent;
+            animation: checkbox-pop 0.3s ease-out;
+        }
+
+        @keyframes checkbox-pop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Modern Quote Form */
+        
+        /* Quote Form Overlay Styles */
+.quote-form-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 54, 93, 0.95);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.quote-form-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.quote-form-container {
+
+    padding: 2rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.quote-form-overlay.active .quote-form-container {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.quote-form-container h2 {
+    color: #f8fbff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+    color: #1a365d;
+}
+
+.form-group input:focus {
+    border-color: #1a365d;
+    box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
+    outline: none;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.submit-btn, .cancel-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.submit-btn {
+    background: #1a365d;
+    color: white;
+    border: none;
+}
+
+.cancel-btn {
+    background: white;
+    color: #1a365d;
+    border: 2px solid #1a365d;
+}
+
+.submit-btn:hover {
+    background: #2a5298;
+    transform: translateY(-2px);
+}
+
+.cancel-btn:hover {
+    background: #f8fafc;
+    transform: translateY(-2px);
+}
+        
+
+        /* Modern Action Buttons */
+        .send-quote-btn,
+       .schedule-call-btn {
+         width: 100%;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+.send-quote-btn {
+    background: #1a365d;
+    color: white;
+    border: none;
+}
+
+.schedule-call-btn {
+    background: #2a5298;
+    color: #1a365d;
+    border: 2px solid #1a365d;
+}
+
+        .send-quote-btn:hover {
+            background: #2a5298;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .send-quote-btn.disabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+        .schedule-call-btn {
+            color: #ffffff;
+            border: 2px solid #ffffff;
+        }
+
+
+        .send-quote-btn:hover:not(.disabled),
+.schedule-call-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+        
+
+        /* Bundle includes box - simplify and make more compact */
+        .bundle-includes {
+            margin-top: 4px;
+            margin-bottom: 12px;
+            display: block;
+            padding: 0;
+            background: transparent;
+            border: none;
+        }
+
+        .bundle-includes-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+
+        .bundle-includes-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4px;
+        }
+
+        .bundle-item {
+            display: flex;
+            align-items: center;
+            padding: 2px 0;
+            font-size: 0.85rem;
+        }
+
+        .bundle-item i {
+            margin-right: 6px;
+            color: #ffffff;
+            font-size: 0.75rem;
+        }
+
+        /* Header Section */
+        .header-section {
+    border-radius: 20px;
+    margin-bottom: 20px;
+    padding: 20px 0;
+    text-align: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.header-content {
+    flex: 1;
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+        .intro-subtitle {
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        /* Country Selector Responsive Styles */
+        .country-selector {
+    right: 70px;
+    width: 150px;  
+    z-index: 30;
+}
+
+/* Add smaller screen adjustments */
+
+
+        .country-selector select {
+    width: 100%;
+    padding: 10px 12px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #1a365d;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231a365d'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
+        .country-selector select:hover {
+    border-color: #2a5298;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.country-selector select:focus {
+    outline: none;
+    border-color: #1a365d;
+    box-shadow: 0 0 0 2px rgba(26, 54, 93, 0.2);
+}
+        .service-layout {
+    grid-template-columns: 220px 1fr; /* Fixed width for buttons column */
+    gap: 20px;
+    align-items: start;
+    position: relative;
+}
+.buttons-column {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 20px;
+    z-index: 10;
+}
+.services-container-right {
+    position: relative;
+}
+[id$="-services"] {
+    position: absolute;
+    left: calc(100% + 20px);
+    top: 0;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    visibility: hidden;
+    z-index: 20;
+    background: transparent; /* Add this */
+}
+
+#hoc-workspace-services { top: -480px; }
+#bespoke-services { top: -410px; }
+#company-registration-services { top: -350px; }
+#startups-services { top: -300px; }
+#relocation-services { top: -240px; }
+
+[id$="-services"].active {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+}
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Add button slide animation */
+@keyframes slideButton {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(20px);
+    }
+}
+.service-button:hover {
+    background: #f1f5f9;
+    transform: translateX(5px);
+}
+
+.service-button:hover + [id$="-services"] {
+    opacity: 1;
+    transform: translateX(0);
+}
+.button-container {
+    padding-top: 5px;
+    border-top: 1px solid #e2e8f0;
+}
+
+
+/* Receipt header */
+.receipt-header {
+    padding: 15px;
+    border-bottom: 2px dashed #e2e8f0;
+    text-align: center;
+    position: relative; /* Keep this for other positioning if needed */
+}
+
+
+
+/* Receipt content */
+.receipt-content {
+    position: relative;
+    padding: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    background: repeating-linear-gradient(
+        0deg,
+        #fff,
+        #fff 16px,
+        #f8fafc 16px,
+        #f8fafc 17px
+    );
+}
+
+
+/* Receipt category */
+.receipt-category {
+    margin-bottom: 4px; /* Reduced from 12px */
+    padding-bottom: 4px; /* Reduced from 8px */
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+
+.receipt-category .font-bold {
+    color: #1a365d;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+/* Receipt items */
+.receipt-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.83rem;
+    color: #4a5568;
+    padding-top: 0.5rem;
+
+}
+
+.receipt-item:not(:last-child) {
+    border-bottom: 1px dotted #e2e8f0;
+}
+
+/* Total section */
+#total-page2 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1a365d;
+}
+
+
+
+/* Receipt footer */
+#receipt-container {
+    background: #fff;
+    width: 250px;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+    margin: 10px auto; /* Increased padding */
+    border: 1px solid #e2e8f0;
+    margin-bottom: 40px;
+    padding:10px;
+}
+#receipt-container::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -11px;
+    width: 100%;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: -1;
+}
+
+#receipt-container::after {
+    content: '';
+    position: absolute;
+    left: -1px;
+    bottom: -10px;
+    width: calc(100% + 2px);
+    height: 20px;
+    background-image: linear-gradient(45deg, transparent 33.333%, #ffffff 33.333%, #ffffff 66.667%, transparent 66.667%),
+                      linear-gradient(-45deg, transparent 33.333%, #ffffff 33.333%, #ffffff 66.667%, transparent 66.667%);
+    background-size: 20px 40px;
+    background-position: 0 -20px;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+}
+
+
+/* Scrollbar styling */
+.receipt-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.receipt-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.receipt-content::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 3px;
+}
+/* Add barcode styles */
+/* Barcode styles */
+.receipt-barcode {
+    position: relative;
+    width: 100%;
+    padding: 0 10px;
+    text-align: center;
+    margin-top: 15px;
+    border-top: 1px dashed #e2e8f0;
+}
+
+.barcode-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+.barcode {
+    height: 50px;
+    width: 90%;
+    margin: 0 auto;
+    background-image: 
+        repeating-linear-gradient(
+            to right,
+            #000 0px,
+            #000 2px,
+            transparent 2px,
+            transparent 4px
+        );
+    background-size: 4px 100%;
+    background-repeat: repeat-x;
+}
+
+
+/* Add perforated edges */
+@media print {
+    #receipt-container {
+        break-inside: avoid;
+    }
+}
+/* Mobile Responsive Layout */
+@media screen and (max-width: 768px) {
+    /* Reset body transform */
+    body {
+        transform: none;
+        padding: 10px;
+    }
+
+    /* Adjust header layout */
+    .header-section {
+        margin-top: 0;
+        padding: 20px 10px;
+        display: flex;
+        flex-direction: column;
+    }
+   
+    .header-content {
+        max-width: 100%;
+        order:1;
+    }
+
+    .intro-subtitle {
+        font-size: 1.5rem;
+        line-height: 1.3;
+    }
+
+    .intro-description {
+        font-size: 1rem;
+        line-height: 1.4;
+        margin-bottom: 20px;
+    }
+    .country-selector {
+        position: static;
+        width: 100%;
+        max-width: 300px;
+        margin: 20px auto 0;
+        transform: none;
+        order: 2; /* Place after header content */
+        padding: 0 15px;
+    }
+    .country-selector select {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        background-color: white;
+        border: 2px solid var(--brand-primary);
+        margin-top: 10px;
+    }
+    .max-w-6xl {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+    }
+
+    /* Receipt container adjustments */
+    #receipt-container {
+        width: 100%;
+        max-width: 300px;
+        margin: 20px auto;
+        order: 2;
+    }
+
+    /* Services layout adjustments */
+    .service-layout {
+        grid-template-columns: 1fr !important;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .buttons-column {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    /* Service panels positioning */
+    [id$="-services"] {
+        position: relative !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        margin: 10px 0;
+        padding: 10px;
+        opacity: 1;
+        transform: none;
+        background: transparent; /* Add this */
+        box-shadow: none; /* Add this */
+    }
+    #hoc-workspace-services,
+    #bespoke-services,
+    #company-registration-services,
+    #startups-services,
+    #relocation-services {
+        top: 0 !important;
+        margin: 0 !important;
+        padding: 10px !important;
+    }
+    .services-container-right {
+        position: relative;
+        background: transparent;
+    }
+    /* Action buttons */
+    .send-quote-btn,
+    .schedule-call-btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    /* Form overlay adjustments */
+    .quote-form-container {
+        width: 95%;
+        margin: 10px;
+        padding: 15px;
+    }
+}
+
+/* Even smaller screens */
+@media screen and (max-width: 480px) {
+    .intro-subtitle {
+        font-size: 1.25rem;
+    }
+
+    .buttons-column {
+        padding: 10px;
+    }
+
+    .service-button {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+
+    .form-group input {
+        padding: 10px;
+    }
+}
+
+/* Fix service visibility on mobile */
+@media screen and (max-width: 768px) {
+    [id$="-services"].active {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        margin-bottom: 15px;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    .service-button.active + [id$="-services"] {
+        margin-top: 10px;
+    }
+}
+    </style>
+</head>
+
+<body class="items-center justify-center p-4">
+    
+    <!-- Update the header section -->
+    <div class="header-section ">
+        <div class="header-content">
+            <div class="intro-text">
+                <h1 class="intro-subtitle">World's first all-in-one Business Portal</h1>
+                <h2 class="intro-description">Transform your global operations with our comprehensive Workspace</h2>
+            </div>
+        </div>
+
+        <div class="country-selector">
+            <select id="country-select" required>
+                <option value="" disabled selected>Select Country</option>
+                <option value="austria">Austria</option>
+                <option value="czech">Czech Republic</option>
+                <option value="delaware">Delaware (USA)</option>
+                <option value="denmark">Denmark</option>
+                <option value="dubai">Dubai (UAE)</option>
+                <option value="estonia">Estonia</option>
+                <option value="finland">Finland</option>
+                <option value="france">France</option>
+                <option value="germany">Germany</option>
+                <option value="india">India</option>
+                <option value="italy">Italy</option>
+                <option value="latvia">Latvia</option>
+                <option value="lithuania">Lithuania</option>
+                <option value="luxembourg">Luxembourg</option>
+                <option value="netherlands">Netherlands</option>
+                <option value="poland">Poland</option>
+                <option value="portugal">Portugal</option>
+                <option value="romania">Romania</option>
+                <option value="seychelles">Seychelles</option>
+                <option value="spain">Spain</option>
+                <option value="sweden">Sweden</option>
+            </select>
+            <div class="country-error hidden">Please select a country</div>
+        </div>
+
+    </div>
+
+
+    <div class="max-w-6xl mx-auto grid grid-cols-3 gap-4 ">
+
+        <div>
+            <div id="receipt-container" class="bg-white shadow-lg rounded-lg move-left receipt-3d">
+                <div class="receipt-header">
+                    <div class="flex justify-between items-center font-bold text-lg">
+                        <span>Total</span>
+                        <span id="total-page2">€0</span>
+                    </div>
+                </div>
+
+                <div class="receipt-content">
+                    <!-- Receipt items will be added here dynamically -->
+                </div>
+<!-- Add this before the closing receipt-container div -->
+<div class="receipt-barcode">
+    <div class="barcode-container">
+        <div class="barcode"></div>
+    </div>
+</div>
+           
+    </div>
+</div>
+<div>
+            <!-- Add this right after the <div class="header"> -->
+           
+            <!-- Update the services section structure -->
+<div class="service-layout">
+    <!-- Left column for buttons -->
+    <div class="buttons-column">
+        <h2 class="text-xl font-bold text-gray-800 mb-6">Our Services</h2>
+        <div class="mb-4 flex flex-col">
+            <button id="hoc-workspace-btn" class="service-button">
+                HoC Workspace <i class="fas fa-globe text-lg opacity-70"></i>
+            </button>
+            <button id="bespoke-btn" class="service-button">
+                Virtual Office Services <i class="fas fa-puzzle-piece text-lg opacity-70"></i>
+            </button>
+            <button id="company-registration-btn" class="service-button">
+                Company Registration Services <i class="fas fa-building text-lg opacity-70"></i>
+            </button>
+            <button id="startups-btn" class="service-button">
+                Payrolling Services <i class="fas fa-rocket text-lg opacity-70"></i>
+            </button>
+            <button id="relocation-btn" class="service-button">
+                Onboarding Services <i class="fas fa-plane-departure text-lg opacity-70"></i>
+            </button>
+        </div>
+            <div class="button-container">
+                <button id="send-quote-btn" class="send-quote-btn disabled">
+                    Get Your Personalised Quote <i class="fas fa-paper-plane text-lg opacity-70"></i>
+                </button>
+                <button id="schedule-call-btn" class="schedule-call-btn">
+                    Schedule Call <i class="fas fa-phone text-lg opacity-70"></i>
+                </button>
+            </div>
+        </div>
+            <!-- Add this before closing body tag -->
+            <div id="quote-form-overlay" class="quote-form-overlay hidden">
+                <div class="quote-form-container">
+                    <h2>Send Quote</h2>
+                    <form id="quote-form">
+                        <div class="form-group">
+                            <input type="text" id="name" required>
+                            <label for="name">Name</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" required>
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="company" required>
+                            <label for="company">Company</label>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="submit-btn">Submit</button>
+                            <button type="button" class="cancel-btn" id="cancel-form">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div class="services-container-right">
+                <div id="hoc-workspace-services" class="hidden ml-0">
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="core-bookkeeping-checkbox" class="form-checkbox text-green-500 h-5 w-5"
+                                type="checkbox" />
+                            <h2 class="text-white-900 ml-3">Bundle(€ 1495/year +€0.09 Per Page)</h2>
+                        </div>
+                        <span class="text-white-900">€1495</span>
+                    </div>
+
+                    <!-- Replace the bundle details box with this simpler version -->
+                    <div id="bundle-includes" class="bundle-includes">
+                        <div class="bundle-includes-title">Bundle includes:</div>
+                        <div class="bundle-includes-grid">
+                            <div class="bundle-item">
+                                <i class="fas fa-check"></i>
+                                <span>VAT ID</span>
+                            </div>
+                            <div class="bundle-item">
+                                <i class="fas fa-check"></i>
+                                <span>EORI ID</span>
+                            </div>
+                            <div class="bundle-item">
+                                <i class="fas fa-check"></i>
+                                <span>Register as Employee</span>
+                            </div>
+                            <div class="bundle-item">
+                                <i class="fas fa-check"></i>
+                                <span>AI Tax Filing</span>
+                            </div>
+                            <div class="bundle-item">
+                                <i class="fas fa-check"></i>
+                                <span>AI Corporate Secretarial Agent</span>
+                            </div>
+                            <div class="bundle-item">
+                                <i class="fas fa-check"></i>
+                                <span>AI Financial Statement</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="vat-tax-id-checkbox" class="form-checkbox text-green-500 h-5 w-5" type="checkbox" />
+                            <div class="ml-3">
+                                <h2 class="text-white-900 ml-3">VAT ID Application</h2>
+                                <p class="text-white-900 text-sm opacity-75">(Base Price €75 upto €550)</p>
+                            </div>
+                        </div>
+                        <span class="text-white-900">€75</span>
+                    </div>
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="eori-number-checkbox" class="form-checkbox text-green-500 h-5 w-5" type="checkbox" />
+                            <div class="ml-3">
+                                <h2 class="text-white-900 ml-3">EORI ID Application</h2>
+                                <p class="text-white-900 text-sm opacity-75">(Base Price €75 upto €550)</p>
+                            </div>
+                        </div>
+                        <span class="text-white-900">€75</span>
+                    </div>
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="employer-record-checkbox" class="form-checkbox text-green-500 h-5 w-5"
+                                type="checkbox" />
+                            <div class="ml-3">
+                                <h2 class="text-white-900 ml-3">Register as Employer</h2>
+                                <p class="text-white-900 text-sm opacity-75">(Base Price €75 upto €550)</p>
+                            </div>
+                        </div>
+                        <span class="text-white-900">€75</span>
+                    </div>
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="ai-tax-filing-checkbox" class="form-checkbox text-green-500 h-5 w-5" type="checkbox" />
+                            <div class="ml-3">
+                                <h2 class="text-white-900 ml-3">AI Tax Filing </h2>
+                                <p class="text-white-900 text-sm opacity-75">(excludes due diligence)</p>
+                            </div>
+                        </div>
+                        <span class="text-white-900">€75 per return</span>
+
+
+                    </div>
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="personal-tax-checkbox" class="form-checkbox text-green-500 h-5 w-5" type="checkbox" />
+                            <h2 class="text-white-900 ml-3">AI Corporate Secretarial Agent
+                            </h2>
+                        </div>
+                        <span class="text-white-900">€75/hour</span>
+                    </div>
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="chamber-commerce-checkbox" class="form-checkbox text-green-500 h-5 w-5"
+                                type="checkbox" />
+                            <h2 class="text-white-900 ml-3">AI Financial Statement preparation
+                            </h2>
+                        </div>
+                        <span class="text-white-900">€550</span>
+                    </div>
+
+                </div>
+
+
+                <div id="bespoke-services" class="hidden ml-0">
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="elogin-checkbox" class="form-checkbox text-green-500 h-5 w-5" type="checkbox" />
+                            <div class="ml-3">
+                                <h2 class="text-white-900 ml-3">Registered Office </h2>
+                                <p class="text-white-900 text-sm opacity-75">(EU, suitable for company registration)</p>
+                            </div>
+                        </div>
+                        <span class="text-white-900">€100/month</span>
+                    </div>
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="market-report-checkbox" class="form-checkbox text-green-500 h-5 w-5"
+                                type="checkbox" />
+                            <div class="ml-3">
+                                <h2 class="text-white-900 ml-3">Virtual Office</h2>
+                                <p class="text-white-900 text-sm opacity-75">(EU,not suitable for company registration)</p>
+                            </div>
+                        </div>
+                        <span class="text-white-900">€295/year</span>
+                    </div>
+
+
+
+                </div>
+                <div id="company-registration-services" class="hidden ml-0">
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="branch-registration-checkbox" class="form-checkbox text-green-500 h-5 w-5"
+                                type="checkbox" />
+                            <div class="ml-3">
+                                <h2 class="text-white-900 ml-3">Branch registration in EU</h2>
+                                <p class="text-white-900 text-sm opacity-75">(Base Price €295 upto €995)</p>
+                            </div>
+                        </div>
+                        <span class="text-white-900">€295</span>
+                    </div>
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="business-registration-checkbox" class="form-checkbox text-green-500 h-5 w-5"
+                                type="checkbox" />
+                            <div class="ml-3">
+                                <h2 class="text-white-900 ml-3">LTD registration in EU</h2>
+                                <p class="text-white-900 text-sm opacity-75">(Base Price €595 upto €1295)</p>
+                            </div>
+                        </div>
+                        <span class="text-white-900">€595</span>
+                    </div>
+
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="nominee-director-checkbox" class="form-checkbox text-green-500 h-5 w-5"
+                                type="checkbox" />
+                            <h2 class="text-white-900 ml-3">Nominee Director</h2>
+                        </div>
+                        <span class="text-white-900">€1000 p.a</span>
+                    </div>
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="nominee-shareholder-checkbox" class="form-checkbox text-green-500 h-5 w-5"
+                                type="checkbox" />
+                            <h2 class="text-white-900 ml-3">Nominee Shareholder</h2>
+                        </div>
+                        <span class="text-white-900">€500 p.a</span>
+                    </div>
+                </div>
+                <div id="startups-services" class="hidden ml-0">
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="investor-match-checkbox" class="form-checkbox text-green-500 h-5 w-5"
+                                type="checkbox" />
+                            <div class="ml-3">
+                                <h2 class="text-white-900 ml-3">Payroll Employee Service(EU)</h2>
+                                <p class="text-white-900 text-sm opacity-75">(€25/month per employee)</p>
+                            </div>
+                        </div>
+                        <span class="text-white-900">€25</span>
+
+                    </div>
+
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="business-plan-checkbox" class="form-checkbox text-green-500 h-5 w-5"
+                                type="checkbox" />
+                            <div class="ml-3">
+                                <h2 class="text-white-900 ml-3">Employment of Record(EOR) Service</h2>
+                                <p class="text-white-900 text-sm opacity-75">(€175/month per employee)</p>
+                            </div>
+                        </div>
+                        <span class="text-white-900">€175</span>
+                    </div>
+                </div>
+                <div id="relocation-services" class="hidden ml-0">
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="relocation-employees-checkbox" class="form-checkbox text-green-500 h-5 w-5"
+                                type="checkbox" />
+                            <h2 class="text-white-900 ml-3">Dedicated 'Go to Market Abroad'-Report</h2>
+                        </div>
+                        <span class="text-white-900">€295</span>
+                    </div>
+                    <div class="flex items-start mb-2 justify-between">
+                        <div class="flex items-center">
+                            <input id="residency-application-checkbox" class="form-checkbox text-green-500 h-5 w-5"
+                                type="checkbox" />
+                            <h2 class="text-white-900 ml-3">Onboarding KYC Fee</h2>
+                        </div>
+                        <span class="text-white-900">€195</span>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+
+
+    </div>
+</body>
+<script>
+    // Immediately invoked function for cleaner scope
+    (function () {
+        'use strict';
+
+        // Constants
+        const CONFIG = {
+            API_ENDPOINT: 'https://script.google.com/macros/s/AKfycbz9_OVTMh12KI06RAJDGOeWpMVGmv2ALSnX9x-5bah5PQLeyCB3DBj4rTqD20QamplaaA/exec ',
+            MOBILE_BREAKPOINT: 768
+        };
+
+        // Service categories with proper typing
+        // Replace the existing ServiceCategories object with this:
+        // Update the ServiceCategories object
+        const ServiceCategories = {
+            'hoc-workspace': 'HoC Workspace',
+            'bespoke': 'Virtual Office Services',
+            'company-registration': 'Company Registration Services',
+            'startups': 'Payrolling Services',
+            'relocation': 'Onboarding Services'
+        };
+
+        // State management
+        const state = {
+            total: 0,
+            selectedServices: {},
+            currentService: null,
+            isProcessing: false,
+            country: ''
+        };
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+        function initializeApp() {
+            initializeServiceButtons();
+            initializeCheckboxes();
+            initializeQuoteForm();
+            initializeDefaultService();
+            setupMobileResponsiveness();
+            const scheduleCallBtn = document.getElementById('schedule-call-btn');
+            scheduleCallBtn.addEventListener('click', function () {
+                window.open('https://meetings-eu1.hubspot.com/dr-krishna', '_blank');
+            });
+        }
+
+        // Service buttons
+        const hocWorkspaceBtn = document.getElementById('hoc-workspace-btn');
+        const bespokeBtn = document.getElementById('bespoke-btn');
+        const companyRegistrationBtn = document.getElementById('company-registration-btn');
+        const startupsBtn = document.getElementById('startups-btn');
+        const relocationBtn = document.getElementById('relocation-btn');
+
+
+        // Service containers and form elements
+        const servicesContainer = document.getElementById('services-container');
+        const receiptContainer = document.getElementById('receipt-container');
+        const totalPage2 = document.getElementById('total-page2');
+        const sendQuoteBtn = document.getElementById('send-quote-btn');
+        const quoteFormOverlay = document.getElementById('quote-form-overlay');
+        const quoteForm = document.getElementById('quote-form');
+        const cancelFormBtn = document.getElementById('cancel-form');
+
+        function initializeServiceButtons() {
+            hocWorkspaceBtn.addEventListener('click', () => toggleServices('hoc-workspace-services'));
+            bespokeBtn.addEventListener('click', () => toggleServices('bespoke-services'));
+            companyRegistrationBtn.addEventListener('click', () => toggleServices('company-registration-services'));
+            startupsBtn.addEventListener('click', () => toggleServices('startups-services'));
+            relocationBtn.addEventListener('click', () => toggleServices('relocation-services'));
+        }
+
+        function initializeCheckboxes() {
+    document.querySelectorAll('.form-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', async function (event) {
+            if (state.isProcessing) {
+                event.preventDefault();
+                return;
+            }
+
+            state.isProcessing = true;
+            const serviceItem = this.closest('.flex.items-start.mb-2');
+            const serviceName = serviceItem.querySelector('h2').textContent.trim();
+            const price = parseInt(serviceItem.querySelector('span').textContent.replace('€', ''));
+            const category = this.closest('[id$="-services"]').id.replace('-services', '');
+
+            // Scroll handling for both checking and unchecking
+            if (window.innerWidth <= 768) {
+                const receipt = document.getElementById('receipt-container');
+                
+                // Scroll to receipt first
+                receipt.scrollIntoView({ behavior: 'smooth' });
+                
+                if (this.checked) {
+                    addItemToReceipt(serviceName, price, category);
+                } else {
+                    removeItemFromReceipt(serviceName, price, category);
+                }
+                
+                // Wait for animation and scroll back to services
+                await new Promise(resolve => setTimeout(resolve, 800));
+                serviceItem.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // Desktop behavior
+                if (this.checked) {
+                    addItemToReceipt(serviceName, price, category);
+                } else {
+                    removeItemFromReceipt(serviceName, price, category);
+                }
+            }
+
+            setTimeout(() => {
+                state.isProcessing = false;
+            }, 200); // Reduced timeout for better responsiveness
+            updateSendQuoteButton();
+        });
+    });
+}
+
+        function initializeQuoteForm() {
+            sendQuoteBtn.addEventListener('click', function () {
+                const totalServices = Object.values(state.selectedServices)
+                    .reduce((acc, curr) => acc + curr.length, 0);
+                if (totalServices > 0) {
+                    quoteFormOverlay.classList.remove('hidden');
+                    quoteFormOverlay.classList.add('active');
+                }
+            });
+
+            cancelFormBtn.addEventListener('click', function () {
+                quoteFormOverlay.classList.remove('active');
+                setTimeout(() => {
+                    quoteFormOverlay.classList.add('hidden');
+                    quoteForm.reset();
+                }, CONFIG.ANIMATION_DURATION);
+            });
+
+            quoteForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                // Check country selection first
+                if (!state.country) {
+                    quoteFormOverlay.classList.remove('active');
+                    quoteFormOverlay.classList.add('hidden');
+
+                    const errorPopup = document.createElement('div');
+                    errorPopup.className = 'fixed inset-0 flex items-center justify-center z-[1100]';
+                    errorPopup.style.backgroundColor = 'rgba(0, 0, 0, 0.75)';
+                    errorPopup.innerHTML = `
+            <div class="bg-white rounded-lg p-8 max-w-md mx-4 text-center transform scale-0 transition-all duration-300">
+                <div class="mb-6">
+                    <i class="fas fa-exclamation-circle text-6xl text-red-500"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">Country Required</h3>
+                <p class="text-gray-600 mb-4">Please select a country before sending the quote.</p>
+                <button class="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-300" onclick="this.closest('.fixed').remove()">
+                    Close
+                </button>
+            </div>
+        `;
+
+                    document.body.appendChild(errorPopup);
+
+                    setTimeout(() => {
+                        const popupContent = errorPopup.querySelector('div');
+                        popupContent.classList.remove('scale-0');
+                        popupContent.classList.add('scale-100');
+                    }, 10);
+                    return;
+                }
+                const submitBtn = this.querySelector('.submit-btn');
+                const cancelBtn = this.querySelector('.cancel-btn');
+                const originalBtnText = submitBtn.innerHTML;
+
+                try {
+                    // Disable submit button and show loading state
+                    submitBtn.disabled = true;
+                    cancelBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                    submitBtn.style.opacity = '0.7';
+                    submitBtn.style.cursor = 'not-allowed';
+
+                    cancelBtn.classList.add('disabled');
+                    cancelBtn.style.cursor = 'not-allowed';
+                    cancelBtn.style.opacity = '0.7';
+
+                    // Format selected services with prices          
+
+
+                    // Prepare form data
+                    // Update in your quoteForm submit handler
+                    const formData = {
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        company: document.getElementById('company').value,
+                        country: document.getElementById('country-select').value,
+                        services: Object.entries(state.selectedServices).map(([category, services]) => {
+                            return {
+                                category: ServiceCategories[category],
+                                items: services.map(serviceName => {
+                                    const categoryServices = document.querySelector(`#${category}-services`);
+                                    const serviceElement = Array.from(categoryServices.querySelectorAll('.flex.items-start.mb-2'))
+                                        .find(el => el.querySelector('h2').textContent.trim() === serviceName);
+
+                                    const price = serviceElement ? serviceElement.querySelector('span.text-white-900').textContent : '';
+                                    return { name: serviceName, price: price };
+                                })
+                            };
+                        }),
+                        total: totalPage2.textContent
+                    };
+                    // Replace the country validation code in the quoteForm event listener
+                    if (!formData.country) {
+                        const errorPopup = document.createElement('div');
+                        errorPopup.className = 'fixed inset-0 flex items-center justify-center z-50';
+                        errorPopup.style.backgroundColor = 'rgba(0, 0, 0, 0.75)';
+                        errorPopup.innerHTML = `
+                         <div class="bg-white rounded-lg p-8 max-w-md mx-4 text-center transform scale-0 transition-all duration-300">
+                             <div class="mb-6">
+                             <i class="fas fa-exclamation-circle text-6xl text-red-500"></i>
+                                 </div>
+                                         <h3 class="text-2xl font-bold text-gray-800 mb-3">Country Required</h3>
+                                 <p class="text-gray-600 mb-4">Please select a country before sending the quote.</p>
+                                <button class="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-300" onclick="this.closest('.fixed').remove()">
+                              Close
+                              </button>
+                                    </div>
+                            `;
+
+                        document.body.appendChild(errorPopup);
+
+                        setTimeout(() => {
+                            const popupContent = errorPopup.querySelector('div');
+                            popupContent.classList.remove('scale-0');
+                            popupContent.classList.add('scale-100');
+                        }, 10);
+
+                        return;
+                    }
+                    // Send data to Google Sheets
+                    await fetch(CONFIG.API_ENDPOINT, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        body: JSON.stringify(formData),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    quoteFormOverlay.classList.remove('active');
+                    quoteForm.reset();
+                    quoteFormOverlay.classList.add('hidden');
+
+                    // Show thank you popup
+                    const thankYouPopup = document.createElement('div');
+                    thankYouPopup.className = 'fixed inset-0 flex items-center justify-center z-50';
+                    thankYouPopup.style.backgroundColor = 'rgba(0, 0, 0, 0.75)';
+                    thankYouPopup.innerHTML = `
+                        <div class="bg-white rounded-lg p-8 max-w-md mx-4 text-center transform scale-0 transition-all duration-300">
+                            <div class="mb-6">
+                                <i class="fas fa-check-circle text-6xl text-green-500"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-3">Thank You!</h3>
+                            <p class="text-gray-600 mb-2">Your quote has been sent successfully.</p>
+                            <p class="text-gray-500 mb-4">You will receive the quote details in your email shortly.</p>
+                            <div class="animate-pulse mt-4">
+                                <p class="text-sm text-gray-400">Page will refresh in a moment...</p>
+                            </div>
+                        </div>
+                    `;
+
+                    document.body.appendChild(thankYouPopup);
+
+                    setTimeout(() => {
+                        const popupContent = thankYouPopup.querySelector('div');
+                        popupContent.classList.remove('scale-0');
+                        popupContent.classList.add('scale-100');
+                    }, 10);
+
+                    // Wait and refresh page
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
+
+                } catch (error) {
+                    console.error('Error:', error);
+
+                    // Show error message
+                    const errorPopup = document.createElement('div');
+                    errorPopup.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in';
+                    errorPopup.innerHTML = `
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        Failed to send quote. Please try again.
+                    `;
+                    document.body.appendChild(errorPopup);
+
+                    // Remove error message after 3 seconds
+                    setTimeout(() => {
+                        errorPopup.classList.add('animate-fade-out');
+                        setTimeout(() => errorPopup.remove(), 300);
+                    }, 3000);
+
+                } finally {
+                    // Reset form state
+                    submitBtn.disabled = false;
+                    cancelBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+
+                    // Reset submit button styles
+                    submitBtn.style.opacity = '1';
+                    submitBtn.style.cursor = 'pointer';
+                    submitBtn.classList.remove('disabled');
+
+                    // Reset cancel button styles
+                    cancelBtn.classList.remove('disabled');
+                    cancelBtn.removeAttribute('disabled');
+                    cancelBtn.style.cursor = 'pointer';
+                    cancelBtn.style.opacity = '1';
+                    cancelBtn.style.pointerEvents = 'auto';
+                }
+            });
+        }
+
+        function initializeDefaultService() {
+    const hocWorkspaceBtn = document.getElementById('hoc-workspace-btn');
+    const hocWorkspaceServices = document.getElementById('hoc-workspace-services');
+    
+    if (hocWorkspaceBtn && hocWorkspaceServices) {
+        // Add active class to button
+        hocWorkspaceBtn.classList.add('active');
+        hocWorkspaceBtn.style.transform = 'translateX(20px)';
+        
+        // Show services
+        hocWorkspaceServices.classList.remove('hidden');
+        hocWorkspaceServices.classList.add('active');
+        
+        // Set current service in state
+        state.currentService = hocWorkspaceServices;
+        
+        // Add animation
+        requestAnimationFrame(() => {
+            hocWorkspaceServices.style.animation = 'slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            hocWorkspaceServices.style.opacity = '1';
+            hocWorkspaceServices.style.transform = 'translateY(0)';
+            hocWorkspaceServices.style.visibility = 'visible';
+        });
+    }
+}
+
+        function hideAllServices() {
+            const allServices = document.querySelectorAll('[id$="-services"]');
+            allServices.forEach(service => service.classList.add('hidden'));
+        }
+
+        // Update the toggleServices function
+// Update the toggleServices function
+function toggleServices(serviceId) {
+    const buttons = document.querySelectorAll('.service-button');
+    const currentButton = document.getElementById(serviceId.replace('-services', '-btn'));
+    const serviceElement = document.getElementById(serviceId);
+    
+    // First hide all other services with proper transition
+    document.querySelectorAll('[id$="-services"]').forEach(service => {
+        if (service.id !== serviceId) {
+            service.style.opacity = '0';
+            service.style.transform = 'translateY(-20px)';
+            service.style.visibility = 'hidden';
+            
+            setTimeout(() => {
+                service.classList.remove('active');
+                service.classList.add('hidden');
+            }, 300); // Match transition duration
+        }
+    });
+
+    // Reset all other buttons
+    buttons.forEach(btn => {
+        if (btn !== currentButton) {
+            btn.classList.remove('active');
+            btn.style.transform = 'translateX(0)';
+        }
+    });
+
+    if (state.currentService === serviceElement) {
+        // Close current service
+        serviceElement.style.opacity = '0';
+        serviceElement.style.transform = 'translateY(-20px)';
+        serviceElement.style.visibility = 'hidden';
+        currentButton.classList.remove('active');
+        currentButton.style.transform = 'translateX(0)';
+        
+        setTimeout(() => {
+            serviceElement.classList.remove('active');
+            serviceElement.classList.add('hidden');
+        }, 300);
+        state.currentService = null;
+    } else {
+        // Open new service
+        serviceElement.classList.remove('hidden');
+        // Small delay to ensure proper transition
+        setTimeout(() => {
+            currentButton.classList.add('active');
+            currentButton.style.transform = 'translateX(20px)';
+            serviceElement.classList.add('active');
+            serviceElement.style.opacity = '1';
+            serviceElement.style.transform = 'translateY(0)';
+            serviceElement.style.visibility = 'visible';
+            serviceElement.style.animation = 'slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+        }, 50);
+        state.currentService = serviceElement;
+    }
+} 
+
+        function updateSendQuoteButton() {
+            const totalServices = Object.values(state.selectedServices)
+                .reduce((acc, curr) => acc + curr.length, 0);
+            const countrySelect = document.getElementById('country-select');
+            const country = countrySelect ? countrySelect.value : '';
+
+            if (totalServices > 0) {
+                sendQuoteBtn.classList.add('active');
+                sendQuoteBtn.classList.remove('disabled');
+            } else {
+                sendQuoteBtn.classList.remove('active');
+                sendQuoteBtn.classList.add('disabled');
+            }
+        }
+        document.getElementById('country-select').addEventListener('change', function (e) {
+            state.country = e.target.value;
+            updateSendQuoteButton();
+        });
+
+        function addItemToReceipt(serviceName, price, category) {
+            if (!state.selectedServices[category]) {
+                state.selectedServices[category] = [];
+            }
+
+            if (!state.selectedServices[category].includes(serviceName)) {
+                let receiptContent = receiptContainer.querySelector('.receipt-content');
+                let categorySection = receiptContent.querySelector(`.category-${category}`);
+
+                // Update the category section creation in the addItemToReceipt function
+                if (!categorySection) {
+                    categorySection = document.createElement('div');
+                    categorySection.className = `category-${category} receipt-category`;
+                    categorySection.innerHTML = `
+        <div class="font-bold text-gray-800 mb-2">${ServiceCategories[category] || category}</div>
+    `;
+                    receiptContent.appendChild(categorySection);
+                }
+
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'receipt-item ';
+                itemDiv.innerHTML = `
+                    <span>${serviceName}</span>
+                    <span>€${price}</span>
+                `;
+
+                categorySection.appendChild(itemDiv);
+                state.selectedServices[category].push(serviceName);
+                state.total = Math.max(0, state.total + price);
+                updateTotal();
+                updateSendQuoteButton();
+
+                // Auto scroll to bottom when new item is added
+                receiptContent.scrollTop = receiptContent.scrollHeight;
+
+                receiptContainer.classList.add('receipt-glow');
+                setTimeout(() => receiptContainer.classList.remove('receipt-glow'), 500);
+
+                // Add highlight animation to the checkbox
+                const checkbox = document.querySelector(`input[type="checkbox"]:checked[id$="${serviceName.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '')}-checkbox"]`);
+                if (checkbox) {
+                    const parent = checkbox.closest('.flex.items-start.mb-2');
+                    parent.style.animation = 'none';
+                    setTimeout(() => {
+                        parent.style.animation = 'pulseFade 0.5s ease-in-out';
+                    }, 10);
+                }
+            }
+        }
+
+        function removeItemFromReceipt(serviceName, price, category) {
+            if (state.selectedServices[category] && state.selectedServices[category].includes(serviceName)) {
+                const categorySection = receiptContainer.querySelector(`.category-${category}`);
+                const items = categorySection.getElementsByClassName('receipt-item');
+
+                for (let item of items) {
+                    if (item.querySelector('span').textContent === serviceName) {
+                        item.classList.add('removing');
+                        receiptContainer.classList.add('receipt-shake');
+
+                        setTimeout(() => {
+                            receiptContainer.classList.remove('receipt-shake');
+                            item.remove();
+                            state.selectedServices[category] = state.selectedServices[category]
+                                .filter(service => service !== serviceName);
+
+                            if (state.selectedServices[category].length === 0) {
+                                categorySection.remove();
+                                delete state.selectedServices[category];
+                            }
+
+                            state.total = Math.max(0, state.total - price);
+                            updateTotal();
+                            updateSendQuoteButton();
+                        }, CONFIG.ANIMATION_DURATION);
+                        break;
+                    }
+                }
+            }
+        }
+
+        function updateTotal() {
+            const formattedTotal = `€${state.total.toFixed(2)}`;
+            totalPage2.textContent = formattedTotal;
+            totalPage2.classList.add('receipt-fade');
+            setTimeout(() => totalPage2.classList.remove('receipt-fade'), 500);
+        }
+
+        // Detect mobile devices for touch optimizations
+        const isMobile = window.innerWidth <= CONFIG.MOBILE_BREAKPOINT;
+
+        // Adjust layout for mobile on load and resize
+        function setupMobileResponsiveness() {
+            if (window.innerWidth <= CONFIG.MOBILE_BREAKPOINT) {
+                document.body.classList.add('mobile-layout');
+                // Ensure receipt is visible on mobile
+                if (receiptContainer.classList.contains('move-left')) {
+                    receiptContainer.classList.remove('move-left');
+                }
+            } else {
+                document.body.classList.remove('mobile-layout');
+                if (!receiptContainer.classList.contains('move-left')) {
+                    receiptContainer.classList.add('move-left');
+                }
+            }
+
+            // Add resize listener
+            window.addEventListener('resize', setupMobileResponsiveness);
+        }
+
+        // Add smooth scrolling to receipt
+        const receiptContent = document.querySelector('.receipt-content');
+        receiptContent.addEventListener('scroll', () => {
+            requestAnimationFrame(() => {
+                const scrolled = receiptContent.scrollTop > 0;
+                receiptContainer.style.boxShadow = scrolled
+                    ? '0 10px 30px rgba(0, 0, 0, 0.15), 0 1px 8px rgba(0, 0, 0, 0.05)'
+                    : '0 10px 30px rgba(0, 0, 0, 0.1), 0 1px 8px rgba(0, 0, 0, 0.02)';
+            });
+        });
+
+        // Improve focus styles for accessibility
+        document.querySelectorAll('.form-checkbox, button, input').forEach(el => {
+            el.addEventListener('focus', function () {
+                this.style.outline = '2px solid var(--brand-accent)';
+                this.style.outlineOffset = '2px';
+            });
+
+            el.addEventListener('blur', function () {
+                this.style.outline = 'none';
+            });
+        });
+
+        // Add shimmer effect to checked items
+        function addShimmerEffect(checkbox) {
+            if (checkbox.checked) {
+                const parent = checkbox.closest('.flex.items-start.mb-2');
+                if (parent) {
+                    // Remove any existing shimmer elements
+                    const existingShimmer = parent.querySelector('.shimmer-effect');
+                    if (existingShimmer) existingShimmer.remove();
+
+                    // Create and add shimmer element
+                    const shimmer = document.createElement('div');
+                    shimmer.className = 'shimmer-effect';
+                    shimmer.style.cssText = `
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(
+                            to right,
+                            rgba(255, 255, 255, 0) 0%,
+                            rgba(255, 255, 255, 0.1) 50%,
+                            rgba(255, 255, 255, 0) 100%
+                        );
+                        animation: shimmer 2s infinite;
+                        pointer-events: none;
+                        z-index: 1;
+                    `;
+                    parent.style.position = 'relative';
+                    parent.style.overflow = 'hidden';
+                    parent.appendChild(shimmer);
+
+                    // Add the animation if it doesn't exist
+                    if (!document.querySelector('style#shimmer-animation')) {
+                        const style = document.createElement('style');
+                        style.id = 'shimmer-animation';
+                        style.textContent = `
+                            @keyframes shimmer {
+                                0% {
+                                    transform: translateX(-100%);
+                                }
+                                100% {
+                                    transform: translateX(100%);
+                                }
+                            }
+                        `;
+                        document.head.appendChild(style);
+                    }
+                }
+            }
+        }
+
+        // Add effect to checkboxes when changed
+        document.querySelectorAll('.form-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    addShimmerEffect(this);
+                } else {
+                    const parent = this.closest('.flex.items-start.mb-2');
+                    const shimmer = parent.querySelector('.shimmer-effect');
+                    if (shimmer) shimmer.remove();
+                }
+            });
+        });
+
+        // Check all checkboxes initially and add effect to checked ones
+        document.querySelectorAll('.form-checkbox:checked').forEach(checkbox => {
+            addShimmerEffect(checkbox);
+        });
+    })();
+
+    // Add loading state handler
+    function setLoading(element, isLoading) {
+        if (isLoading) {
+            element.classList.add('loading');
+        } else {
+            element.classList.remove('loading');
+        }
+    }
+</script>
+
+</html>
